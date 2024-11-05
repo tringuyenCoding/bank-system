@@ -24,15 +24,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-<<<<<<< HEAD
-      <body className={inter.className}>{children}</body>
-=======
       <body
-        className={`${inter.variable} ${ibmPlexSerif.variable} antialiased`}
+        className={`${inter.variable} ${ibmPlexSerif.variable}`}
       >
         {children}
       </body>
->>>>>>> eeb05f0 (Initial commit from Create Next App)
     </html>
   );
 }
