@@ -21,11 +21,12 @@ import { Input } from "@/components/ui/input"
 import { Divide, Loader2 } from 'lucide-react'
 import CustomInput from './CustomInput'
 import { authFormSchema } from '@/lib/utils'
+import { useRouter } from 'next/navigation'
 
 const AuthForm = ({ type }: { type: string }) => {
   const [user, setUser] = useState(null)
   const [isLoading, setLoading] = useState(false)
-
+  const router = useRouter()
   const formSchema = authFormSchema(type)
 
   // 1. Define your form.
@@ -38,12 +39,32 @@ const AuthForm = ({ type }: { type: string }) => {
   })
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setLoading(true)
-    console.log(values)
-    setLoading(false)
+    try {
+      if (type === 'sign-in') {
+        const response = await signIn({
+          email: data.email,
+          password: data.password,
+        });
+
+        if (response) {
+          router.push('/')
+        }
+      }
+
+      if (type === 'sign-up') {
+        const newUser = await signUp(data);
+        setUser(newUser);
+
+      }
+
+    } catch (error) {
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -89,6 +110,8 @@ const AuthForm = ({ type }: { type: string }) => {
                       </div>
                       <CustomInput control={form.control} name='address1'
                         label='Address' placeholder='Enter your specific address' />
+                      <CustomInput control={form.control} name='city'
+                        label='City' placeholder='Enter your city' />
                       <div className='flex gap-4'>
                         <CustomInput control={form.control} name='state'
                           label='Sate' placeholder='Ex: NY' />
