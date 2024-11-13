@@ -30,7 +30,8 @@ const DoughnutChart = ({ accounts }: DoughnutChartProps) => {
           }
         }
       }
-    } />
+    }
+  />
 }
 
 export default DoughnutChart
